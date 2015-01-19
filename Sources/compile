@@ -1,0 +1,15 @@
+nasm -f elf32 start.asm -o objects/start.o
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/main.o main.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/scrn.o scrn.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/gdt.o gdt.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/idt.o idt.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/isrs.o isrs.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/irq.o irq.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/timer.o timer.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/kb.o kb.c
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o objects/input.o input.c
+
+cd objects
+ld -m elf_i386 -T link.ld -o kernel start.o main.o scrn.o gdt.o idt.o isrs.o irq.o timer.o kb.o input.o
+
+qemu-system-i386 -kernel kernel
